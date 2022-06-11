@@ -1,3 +1,7 @@
+from ast import Delete
+from tkinter.messagebox import NO
+
+
 class BinaryNodeSearchTree:
     def __init__(self, data):
         self.data = data
@@ -38,6 +42,35 @@ class BinaryNodeSearchTree:
             else:
                 return False
 
+    def min(self):
+        if self.left == None:
+            return self.data
+        return self.left.min()
+    
+    def max(self):
+        if self.right == None:
+            return self.data
+        return self.right.min()
+
+    def Delete(self, val):
+        if val < self.data:
+            if self.left:
+                self.left = self.left.Delete(val)
+        elif val > self.data:
+            if self.right:
+                self.right = self.right.Delete(val)
+        else:
+            if self.left == None and self.right == None:
+                return None
+            if self.left is None:
+                return self.right
+            if self.right is None:
+                return self.left
+            min = self.right.min()
+            self.data = min
+            self.right.Delete(min)
+        return self
+
 def buildTree(elements):
     root = BinaryNodeSearchTree(elements[0])
     elements.pop(0)
@@ -48,6 +81,8 @@ def buildTree(elements):
 if __name__ == "__main__":
     ele = [20,40,12,4,7,454,2,21]
     tree = buildTree(ele)
+    tree.Delete(40)
     print(tree.inorderTraversal())
     print(tree.Search(4))
     print(tree.Search(5))
+
